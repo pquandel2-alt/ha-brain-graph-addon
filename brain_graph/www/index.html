@@ -119,6 +119,13 @@
       animation: spin 1s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Kiosk-/Screensaver-Modus (?kiosk oder ?screensaver): nur der Graph */
+    body.kiosk #filter-bar,
+    body.kiosk #legend,
+    body.kiosk #status,
+    body.kiosk #detail-panel { display: none !important; }
+    body.kiosk { cursor: none; }
   </style>
 </head>
 <body>
