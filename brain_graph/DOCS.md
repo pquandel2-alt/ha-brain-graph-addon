@@ -2,6 +2,10 @@
 
 Nach dem Start öffnet sich „Brain Graph" in der Sidebar. Der 3D-Graph lädt automatisch alle Entitäten deiner Installation.
 
+Der Graph aktualisiert sich vollständig selbst — Statusänderungen, neue/entfernte
+Entitäten, Geräte, Bereiche und Automationen erscheinen automatisch, ohne dass die
+Seite neu geladen werden muss.
+
 ## Bedienung
 
 - **Ziehen**: Kamera rotieren (Auto-Rotation stoppt bei Interaktion, setzt danach wieder ein)

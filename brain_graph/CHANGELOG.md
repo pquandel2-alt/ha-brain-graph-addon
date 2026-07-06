@@ -1,3 +1,21 @@
+## 1.9.0
+
+- Der Graph ist jetzt vollständig live, ohne dass ein manuelles Neuladen der
+  Seite nötig ist:
+  - **Struktur live**: neue/entfernte/umbenannte Entitäten, Geräte, Bereiche
+    und Automationen (inkl. geänderter Trigger/Aktionen) lösen serverseitig
+    einen automatischen Neuaufbau des Graphen aus (debounced, ca. 2s nach der
+    letzten Änderung), der an alle verbundenen Browser gepusht wird — zusätzlich
+    ein Sicherheitsnetz-Neuaufbau alle 5 Minuten, falls ein Event doch mal
+    durchrutscht
+  - **Status-Anzeige live**: der im Detail-Panel angezeigte Status eines
+    Knotens war bisher nur der Wert beim ersten Laden — jetzt wird er bei
+    jeder Zustandsänderung aktualisiert, auch während das Panel bereits
+    geöffnet ist
+- Backend abonniert zusätzlich `entity_registry_updated`,
+  `device_registry_updated`, `area_registry_updated` und
+  `automation_reloaded`, um strukturelle Änderungen zu erkennen
+
 ## 1.8.0
 
 - Neue Add-on-Konfigurationsoption `visible_domains`: kommagetrennte Liste von

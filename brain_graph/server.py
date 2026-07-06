@@ -302,12 +302,48 @@ async def handle_live(request):
     return ws
 
 
+REBUILD_DEBOUNCE_SECONDS = 2
+PERIODIC_REBUILD_SECONDS = 300
+
+
 async def on_startup(app):
     session = ClientSession()
     app["session"] = session
     client = HAClient(session)
     app["ha"] = client
     await client.connect()
+
+    app["_rebuild_task"] = None
+
+    async def debounced_rebuild():
+        try:
+            await asyncio.sleep(REBUILD_DEBOUNCE_SECONDS)
+        except asyncio.CancelledError:
+            return
+        try:
+            graph = await build_graph(client)
+            graph["design"] = DESIGN
+            client.broadcast({"type": "graph_update", "graph": graph})
+            _LOG.info("Structural change detected — graph rebuilt and broadcast")
+        except Exception as exc:  # noqa: BLE001
+            _LOG.error("Debounced rebuild failed: %s", exc)
+
+    def schedule_rebuild(event=None):
+        existing = app.get("_rebuild_task")
+        if existing and not existing.done():
+            existing.cancel()
+        app["_rebuild_task"] = asyncio.create_task(debounced_rebuild())
+
+    async def periodic_rebuild():
+        while True:
+            await asyncio.sleep(PERIODIC_REBUILD_SECONDS)
+            try:
+                graph = await build_graph(client)
+                graph["design"] = DESIGN
+                client.broadcast({"type": "graph_update", "graph": graph})
+                _LOG.info("Periodic fallback rebuild broadcast")
+            except Exception as exc:  # noqa: BLE001
+                _LOG.error("Periodic rebuild failed: %s", exc)
 
     def on_state_changed(event):
         data = event.get("data", {})
@@ -327,9 +363,19 @@ async def on_startup(app):
 
     await client.subscribe("state_changed", on_state_changed)
     await client.subscribe("automation_triggered", on_automation_triggered)
+    await client.subscribe("entity_registry_updated", schedule_rebuild)
+    await client.subscribe("device_registry_updated", schedule_rebuild)
+    await client.subscribe("area_registry_updated", schedule_rebuild)
+    await client.subscribe("automation_reloaded", schedule_rebuild)
+
+    app["_periodic_task"] = asyncio.create_task(periodic_rebuild())
 
 
 async def on_cleanup(app):
+    for key in ("_rebuild_task", "_periodic_task"):
+        task = app.get(key)
+        if task and not task.done():
+            task.cancel()
     session = app.get("session")
     if session:
         await session.close()
