@@ -22,37 +22,37 @@ PORT = 8099
 VALID_DESIGNS = {"free", "kaskade", "radial", "puls-kaskade", "sonar-halo"}
 
 
-def _load_design_option():
-    """Liest die vom Nutzer in der Add-on-Konfiguration gewählte Design-Option
-    aus /data/options.json (Supervisor-Konvention). Fällt auf "free" zurück,
-    falls die Datei fehlt (z. B. lokaler Testlauf ohne Supervisor)."""
+def _load_options():
     try:
         with open("/data/options.json", encoding="utf-8") as f:
-            options = json.load(f)
-        design = options.get("design", "free")
-        return design if design in VALID_DESIGNS else "free"
+            return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError, OSError) as exc:
-        _LOG.warning("Could not read /data/options.json (%s) — using default design", exc)
-        return "free"
+        _LOG.warning("Could not read /data/options.json (%s) — using defaults", exc)
+        return {}
 
 
-DESIGN = _load_design_option()
+def _load_design_option(options):
+    """Liest die vom Nutzer in der Add-on-Konfiguration gewählte Design-Option.
+    Fällt auf "free" zurück, falls sie fehlt oder ungültig ist."""
+    design = options.get("design", "free")
+    return design if design in VALID_DESIGNS else "free"
+
+
+def _load_visible_domains(options):
+    """Liest die vom Nutzer gewählten sichtbaren Entitäts-Domains (kommagetrennt,
+    z. B. "light,switch,automation") — reduziert die Überladung des Graphen auf
+    die Kategorien, die den Nutzer interessieren. "all" (Default) zeigt alles."""
+    raw = (options.get("visible_domains") or "all").strip().lower()
+    if raw in ("", "all", "*"):
+        return None
+    return {d.strip() for d in raw.split(",") if d.strip()}
+
+
+_OPTIONS = _load_options()
+DESIGN = _load_design_option(_OPTIONS)
+VISIBLE_DOMAINS = _load_visible_domains(_OPTIONS)
 
 ACTIVE_STATES = {"on", "playing", "running", "active", "home", "open"}
-
-NODE_COLORS = {
-    "ha-core": "#f97316",
-    "floor": "#8b5cf6",
-    "area": "#3b82f6",
-    "device": "#06b6d4",
-    "light": "#fbbf24",
-    "switch": "#34d399",
-    "sensor": "#94a3b8",
-    "automation": "#f472b6",
-    "script": "#a78bfa",
-    "binary_sensor": "#6b7280",
-    "media_player": "#ef4444",
-}
 
 
 def _extract_entity_ids(value):
@@ -207,6 +207,8 @@ async def build_graph(client: HAClient) -> dict:
     for state in states:
         entity_id = state["entity_id"]
         domain = entity_id.split(".")[0]
+        if VISIBLE_DOMAINS is not None and domain not in VISIBLE_DOMAINS:
+            continue
         reg = entity_reg_map.get(entity_id, {})
         attrs = state.get("attributes", {})
 
@@ -229,6 +231,8 @@ async def build_graph(client: HAClient) -> dict:
     automation_states = [s for s in states if s["entity_id"].startswith("automation.")]
     for state in automation_states:
         entity_id = state["entity_id"]
+        if entity_id not in node_ids:
+            continue  # Automation-Domain per visible_domains ausgeblendet
         aid = state.get("attributes", {}).get("id")
         if not aid:
             continue

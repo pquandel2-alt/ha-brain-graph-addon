@@ -1,3 +1,13 @@
+## 1.8.0
+
+- Neue Add-on-Konfigurationsoption `visible_domains`: kommagetrennte Liste von
+  Entitäts-Domains, die im Graph geladen werden sollen (z. B.
+  `light,switch,automation,media_player`) — hilft, überladene Graphen bei
+  großen Installationen zu reduzieren. Default `all` (bisheriges Verhalten,
+  alles sichtbar). Bereiche/Geräte/HA-Core bleiben immer sichtbar
+- Action-Log bleibt jetzt auch im Kiosk-/Screensaver-Modus sichtbar (z. B. für
+  ein Dash-Voice-Tablet als Aktivitäts-Übersicht)
+
 ## 1.7.0
 
 - Etagen-Ebene entfernt: Bereiche hängen jetzt direkt am HA-Core

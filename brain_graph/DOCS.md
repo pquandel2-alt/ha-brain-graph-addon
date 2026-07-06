@@ -43,10 +43,30 @@ Für Kiosk/Screensaver lässt sich das konfigurierte Design per URL zusätzlich
 überschreiben: `&design=kaskade` (oder `radial`, `puls-kaskade`, `sonar-halo`,
 `free`), z. B. `?kiosk&design=sonar-halo`.
 
+## Sichtbare Kategorien (Überladung reduzieren)
+
+Standardmäßig zeigt der Graph alle Entitäten — bei größeren Installationen kann
+das schnell überladen wirken. Über die Add-on-Konfiguration → Option
+`visible_domains` lässt sich einschränken, welche Kategorien überhaupt geladen
+werden: eine kommagetrennte Liste von Domains, z. B.
+
+```
+light,switch,automation,media_player
+```
+
+Standardwert ist `all` (alles anzeigen). Bereiche/Geräte/HA-Core sind immer
+sichtbar — die Einschränkung gilt nur für Entitäten (Licht, Sensor, Automation
+usw.). Nach dem Ändern das Add-on neu starten.
+
+Hinweis: Eine Live-Suche oder anklickbare „Alle hinzufügen"-Buttons sind auf
+der Add-on-Konfigurationsseite von Home Assistant technisch nicht möglich —
+sie unterstützt nur einfache Formularfelder, kein dynamisches UI.
+
 ## Screensaver-/Kiosk-Modus
 
-Hänge `?kiosk` (oder `?screensaver`) an die URL an — dann verschwinden Filter, Legende,
-Status und Action-Log, und nur der rotierende, glühende Graph bleibt. Ideal für
+Hänge `?kiosk` (oder `?screensaver`) an die URL an — dann verschwinden Filter, Legende
+und Status, und nur der rotierende, glühende Graph bleibt (das Action-Log unten rechts
+bleibt sichtbar, praktisch für ein Wandtablet als Aktivitäts-Screensaver). Ideal für
 Wand-Tablets oder als ambienter Screensaver auf einem Dashboard.
 
 Im Kiosk-Modus verwendet die Kamera einen festen Abstand (Default 2200), statt sich nach
