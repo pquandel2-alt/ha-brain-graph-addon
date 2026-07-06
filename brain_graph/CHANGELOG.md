@@ -1,3 +1,15 @@
+## 1.11.0
+
+- Datenfluss sieht jetzt wie ein klar erkennbarer, schnell laufender Strahl
+  aus statt eines leichten Mitleuchtens: `linkDirectionalParticleColor` und
+  `linkDirectionalParticleSpeed` wurden bisher gar nicht aktiv neu ausgewertet
+  (nur Anzahl/Breite) — Farbe und Tempo des aktiven Flusses kamen dadurch nie
+  wirklich an. Jetzt werden alle Fluss-Eigenschaften bei jeder Änderung neu
+  angewendet, Partikelzahl reduziert (weniger, aber deutlichere Partikel),
+  Geschwindigkeit und Kantenfarbe/-breite während des Flusses erhöht
+- Während ein Datenfluss aktiv ist, verblassen alle nicht beteiligten Knoten
+  kurz, damit sich der Strahl sichtbar vom restlichen Graphen abhebt
+
 ## 1.10.1
 
 - Datenfluss-Partikel entlang der Kanten waren praktisch unsichtbar: die
