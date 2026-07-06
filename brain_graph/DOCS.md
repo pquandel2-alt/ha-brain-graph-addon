@@ -15,6 +15,12 @@ Hänge `?kiosk` (oder `?screensaver`) an die URL an — dann verschwinden Filter
 und Status, und nur der rotierende, glühende Graph bleibt. Ideal für Wand-Tablets oder als
 ambienter Screensaver auf einem Dashboard.
 
+Im Kiosk-Modus verwendet die Kamera einen festen Abstand (Default 2200), statt sich nach
+der Kräfte-Simulation automatisch einzupassen — auf schwächerer Hardware (Tablets) kann
+die Simulation bei großen Graphen lange brauchen, ein fester Abstand ist sofort korrekt.
+Passe ihn bei Bedarf über `&zoom=<Zahl>` an, z. B. `?kiosk&zoom=2800` für weiter draußen
+oder `?kiosk&zoom=1600` für näher dran.
+
 Einbindung in ein Lovelace-Dashboard als Vollbild-Kachel (Beispiel `iframe`-Karte):
 
 ```yaml

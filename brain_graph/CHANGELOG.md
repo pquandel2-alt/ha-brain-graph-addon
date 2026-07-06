@@ -1,3 +1,15 @@
+## 1.5.0
+
+- Kiosk-Modus (`?kiosk`/`?screensaver`) verwendet jetzt einen festen Kamera-Abstand
+  statt des zeitabhängigen `zoomToFit` — auf schwächerer Tablet-Hardware braucht die
+  Kräfte-Simulation für große Graphen oft länger als jeder sinnvolle Timeout, wodurch
+  die Kamera zu früh auf einen noch nicht ausgebreiteten Graphen einrastete
+  ("zu nah dran" trotz v1.4.0-Fix)
+- Abstand per `&zoom=<Zahl>` in der URL einstellbar (Default 2200), z. B.
+  `http://<HA-IP>:8099/?kiosk&zoom=2800` für einen weiter herausgezoomten Blick
+- Die interaktive Panel-Ansicht (ohne `?kiosk`) nutzt weiterhin den automatischen
+  `zoomToFit` nach dem Einpendeln der Simulation
+
 ## 1.4.0
 
 - Kamera zoomt nach dem Einpendeln der Kräfte-Simulation automatisch heraus
