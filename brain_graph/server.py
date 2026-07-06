@@ -210,6 +210,8 @@ async def build_graph(client: HAClient) -> dict:
         if VISIBLE_DOMAINS is not None and domain not in VISIBLE_DOMAINS:
             continue
         reg = entity_reg_map.get(entity_id, {})
+        if reg.get("disabled_by"):
+            continue
         attrs = state.get("attributes", {})
 
         add_node({

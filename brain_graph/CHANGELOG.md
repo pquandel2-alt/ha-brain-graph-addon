@@ -1,3 +1,8 @@
+## 1.9.1
+
+- Deaktivierte Entitäten (in der Entity-Registry per `disabled_by` markiert)
+  werden nicht mehr als Knoten geladen
+
 ## 1.9.0
 
 - Der Graph ist jetzt vollständig live, ohne dass ein manuelles Neuladen der
