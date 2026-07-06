@@ -1,3 +1,16 @@
+## 1.12.0
+
+- Der Datenfluss-Strahl (inkl. Ausblenden unbeteiligter Knoten) erscheint
+  jetzt auch beim Ausschalten einer Entität, nicht mehr nur beim Einschalten
+- Der Datenweg zeigt jetzt zusätzlich den vollständigen physischen Weg nach
+  oben bis zum HA-Core (Entität → Gerät/Bereich → HA-Core), Hop für Hop
+  animiert — unabhängig davon, ob die Entität auch Teil einer Automation ist
+- Periodischer Fallback-Rebuild (alle 5 Minuten) und der Rebuild nach
+  Registry-Events broadcasten den neuen Graphen jetzt nur noch, wenn sich die
+  Struktur tatsächlich geändert hat — vorher löste jeder Broadcast ein
+  erneutes Aufheizen der Kräfte-Simulation aus, wodurch sich der Graph
+  gelegentlich sichtbar kurz zusammenzog, obwohl sich nichts geändert hatte
+
 ## 1.11.0
 
 - Datenfluss sieht jetzt wie ein klar erkennbarer, schnell laufender Strahl

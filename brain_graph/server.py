@@ -322,6 +322,17 @@ REBUILD_DEBOUNCE_SECONDS = 2
 PERIODIC_REBUILD_SECONDS = 300
 
 
+def _graph_key(graph: dict):
+    """Vergleichbarer Fingerabdruck der Graph-Struktur (Knoten-Labels/Typen,
+    Kanten) — ignoriert volatile Felder wie `state`, damit reine
+    Zustandsänderungen keinen unnötigen Struktur-Rebuild auslösen."""
+    nodes_key = tuple(sorted((n["id"], n.get("label"), n.get("type")) for n in graph["nodes"]))
+    links_key = tuple(sorted(
+        (l["source"], l["target"], l.get("rel_type")) for l in graph["links"]
+    ))
+    return (nodes_key, links_key)
+
+
 async def on_startup(app):
     session = ClientSession()
     app["session"] = session
@@ -330,6 +341,18 @@ async def on_startup(app):
     await client.connect()
 
     app["_rebuild_task"] = None
+    app["_last_graph_key"] = None
+
+    async def rebuild_and_broadcast_if_changed(log_label):
+        graph = await build_graph(client)
+        new_key = _graph_key(graph)
+        if new_key == app.get("_last_graph_key"):
+            _LOG.info("%s: keine strukturelle Änderung — kein Broadcast", log_label)
+            return
+        app["_last_graph_key"] = new_key
+        graph["design"] = DESIGN
+        client.broadcast({"type": "graph_update", "graph": graph})
+        _LOG.info("%s: Graph geändert — neu gebaut und broadcastet", log_label)
 
     async def debounced_rebuild():
         try:
@@ -337,10 +360,7 @@ async def on_startup(app):
         except asyncio.CancelledError:
             return
         try:
-            graph = await build_graph(client)
-            graph["design"] = DESIGN
-            client.broadcast({"type": "graph_update", "graph": graph})
-            _LOG.info("Structural change detected — graph rebuilt and broadcast")
+            await rebuild_and_broadcast_if_changed("Registry-Event")
         except Exception as exc:  # noqa: BLE001
             _LOG.error("Debounced rebuild failed: %s", exc)
 
@@ -354,10 +374,7 @@ async def on_startup(app):
         while True:
             await asyncio.sleep(PERIODIC_REBUILD_SECONDS)
             try:
-                graph = await build_graph(client)
-                graph["design"] = DESIGN
-                client.broadcast({"type": "graph_update", "graph": graph})
-                _LOG.info("Periodic fallback rebuild broadcast")
+                await rebuild_and_broadcast_if_changed("Periodischer Fallback")
             except Exception as exc:  # noqa: BLE001
                 _LOG.error("Periodic rebuild failed: %s", exc)
 
