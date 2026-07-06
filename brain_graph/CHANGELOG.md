@@ -1,3 +1,15 @@
+## 1.10.1
+
+- Datenfluss-Partikel entlang der Kanten waren praktisch unsichtbar: die
+  Kantenfarbe und die Partikelanzahl hängen vom aktiven Fluss-Status ab, aber
+  3d-force-graph wertet diese Accessor-Funktionen nicht automatisch neu aus,
+  wenn sich nur der interne Fluss-Status ändert — dadurch blieb bisher nur der
+  Knoten-Glow sichtbar (der wird separat pro Frame neu gezeichnet), während
+  die Kanten selbst optisch eingefroren blieben. Jetzt werden die
+  Kanten-Accessor (Farbe, Partikelanzahl, Partikelbreite) bei jeder
+  Fluss-Änderung aktiv neu ausgewertet, wodurch der Datenfluss jetzt sichtbar
+  über die Kanten läuft statt nur der Zielknoten aufzuleuchten
+
 ## 1.10.0
 
 - Neue Add-on-Konfigurationsoption `require_area` (Default `false`): wenn
