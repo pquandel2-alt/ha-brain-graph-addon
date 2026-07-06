@@ -1,3 +1,11 @@
+## 1.4.0
+
+- Kamera zoomt nach dem Einpendeln der Kräfte-Simulation automatisch heraus
+  (`zoomToFit`), damit bei großen Graphen (1000+ Knoten) immer der komplette
+  Graph sichtbar ist statt eines zu nah herangezoomten Ausschnitts
+- Fallback-Timeout (5s), falls die Simulation bei sehr großen Graphen ungewöhnlich
+  lange braucht, um vollständig zu stoppen
+
 ## 1.3.0
 
 - Fester LAN-Port 8099 (zusätzlich zu Ingress): stabile iframe-Einbindung ohne
