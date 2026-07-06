@@ -1,3 +1,18 @@
+## 1.7.0
+
+- Etagen-Ebene entfernt: Bereiche hängen jetzt direkt am HA-Core
+  (HA-Core → Bereich → Gerät → Entität) — wird von den meisten Nutzern
+  ohnehin nicht verwendet
+- Neues Action-Log unten rechts: zeigt die letzten 5 aktivierten Knoten
+  (Entitäten, die aktiv wurden, sowie ausgelöste Automationen) mit Uhrzeit
+- Datenfluss-Anzeige korrigiert: bei jeder Aktivierung wird jetzt der
+  tatsächliche Verarbeitungsweg gezeigt — welche Automation die Entität
+  gesteuert hat (woher) und welche Automation sie selbst auslöst inkl. deren
+  gesteuerter Ziele (wohin) — statt wie zuvor nur der physischen
+  Container-Hierarchie (Gerät/Bereich) zu folgen. Gilt einheitlich in allen
+  Layout-Designs
+- Hintergrund bleibt weiterhin tief schwarz (`#000000`)
+
 ## 1.6.0
 
 - Auswählbares Layout-Design über die Add-on-Konfiguration (Tab „Konfiguration"):

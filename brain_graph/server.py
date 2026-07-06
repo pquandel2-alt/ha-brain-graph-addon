@@ -171,15 +171,9 @@ async def build_graph(client: HAClient) -> dict:
     areas = await client.cmd({"type": "config/area_registry/list"})
     entity_reg = await client.cmd({"type": "config/entity_registry/list"})
 
-    # Floors (kann bei älteren HA-Versionen fehlen)
-    try:
-        floors = await client.cmd({"type": "config/floor_registry/list"})
-    except Exception:  # noqa: BLE001
-        floors = []
-
     _LOG.info(
-        "Loaded: %d states, %d devices, %d areas, %d floors, %d entities",
-        len(states), len(devices), len(areas), len(floors), len(entity_reg),
+        "Loaded: %d states, %d devices, %d areas, %d entities",
+        len(states), len(devices), len(areas), len(entity_reg),
     )
 
     nodes = []
@@ -194,18 +188,11 @@ async def build_graph(client: HAClient) -> dict:
     # Layer 0: HA Core Hub
     add_node({"id": "ha-core", "label": "Home Assistant", "type": "ha-core", "val": 8})
 
-    # Layer 1: Floors
-    for floor in floors:
-        fid = f"floor-{floor['floor_id']}"
-        add_node({"id": fid, "label": floor.get("name", fid), "type": "floor", "val": 5})
-        links.append({"source": "ha-core", "target": fid, "rel_type": "contains"})
-
-    # Layer 2: Areas
+    # Layer 1: Areas (direkt unter HA-Core — Etagen werden nicht genutzt)
     for area in areas:
         aid = f"area-{area['area_id']}"
         add_node({"id": aid, "label": area.get("name", aid), "type": "area", "val": 4})
-        parent = f"floor-{area['floor_id']}" if area.get("floor_id") else "ha-core"
-        links.append({"source": parent, "target": aid, "rel_type": "contains"})
+        links.append({"source": "ha-core", "target": aid, "rel_type": "contains"})
 
     # Layer 3: Devices
     for device in devices:

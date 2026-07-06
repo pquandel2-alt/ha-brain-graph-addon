@@ -98,6 +98,37 @@
       padding: 6px 12px;
       border-radius: 6px;
     }
+    #action-log {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      z-index: 10;
+      background: rgba(15,9,0,0.85);
+      border: 1px solid rgba(224,122,48,0.25);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 11px;
+      color: #f0e6d3;
+      max-width: 260px;
+      pointer-events: none;
+    }
+    #action-log .log-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #e07a30;
+      margin-bottom: 6px;
+    }
+    #action-log .log-entry {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #action-log .log-entry:last-child { margin-bottom: 0; }
+    #action-log .log-time { color: #94a3b8; font-variant-numeric: tabular-nums; }
     #loading {
       position: absolute;
       inset: 0;
@@ -124,6 +155,7 @@
     body.kiosk #filter-bar,
     body.kiosk #legend,
     body.kiosk #status,
+    body.kiosk #action-log,
     body.kiosk #detail-panel { display: none !important; }
     body.kiosk { cursor: none; }
   </style>
@@ -145,7 +177,6 @@
 
   <div id="legend">
     <div class="legend-item"><span class="legend-swatch" style="background:#f97316"></span>HA Core</div>
-    <div class="legend-item"><span class="legend-swatch" style="background:#8b5cf6"></span>Etage</div>
     <div class="legend-item"><span class="legend-swatch" style="background:#3b82f6"></span>Bereich</div>
     <div class="legend-item"><span class="legend-swatch" style="background:#06b6d4"></span>Gerät</div>
     <div class="legend-item"><span class="legend-swatch" style="background:#fbbf24"></span>Licht</div>
@@ -160,6 +191,11 @@
   </aside>
 
   <div id="status">Verbinde…</div>
+
+  <div id="action-log">
+    <div class="log-title">Zuletzt aktiv</div>
+    <div id="action-log-list"></div>
+  </div>
 
   <script type="module" src="brain-graph.js"></script>
 </body>

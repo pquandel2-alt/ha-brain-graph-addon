@@ -8,7 +8,14 @@ Nach dem Start öffnet sich „Brain Graph" in der Sidebar. Der 3D-Graph lädt a
 - **Scrollen**: Zoomen
 - **Klick auf Knoten**: Details anzeigen, Kamera fokussiert
 - **Filter-Chips oben links**: Nach Domain filtern
+- **Action-Log unten rechts**: die letzten 5 aktivierten Knoten (Entitäten,
+  die aktiv wurden, und ausgelöste Automationen) mit Uhrzeit
 - **Layout-Design**: wird über die Add-on-Konfiguration eingestellt (siehe unten)
+
+## Hierarchie
+
+Die Struktur läuft HA-Core → Bereich → Gerät → Entität. Eine Etagen-Ebene gibt
+es bewusst nicht (wird von den meisten Installationen nicht genutzt).
 
 ## Layout-Designs
 
@@ -21,14 +28,16 @@ Verfügbare Werte:
 
 - **free** (Frei) — das ursprüngliche freie Kräfte-Layout
 - **kaskade** (Ebenen-Kaskade) — Hierarchie als Wasserfall von oben (HA-Core)
-  nach unten (Etage → Bereich → Gerät → Entität), Etagen/Bereiche beschriftet
+  nach unten (Bereich → Gerät → Entität), Bereiche beschriftet
 - **radial** (Radial-Halo) — dieselbe Hierarchie als konzentrische Ringe um den HA-Core
 - **puls-kaskade** / **sonar-halo** — wie oben, aber ohne dauerhaften
   Hintergrund-Partikelstrom: nur echte Live-Aktivierungen sind sichtbar
 
-In allen Designs gilt: aktiviert sich eine Entität, fließt der Datenstrom sichtbar
-Hop für Hop über die echten Verbindungen nach oben bis zum HA-Core — nicht nur der
-einzelne Knoten leuchtet auf.
+In allen Designs gilt: aktiviert sich eine Entität, wird der tatsächliche
+Verarbeitungsweg sichtbar — nicht nur der einzelne Knoten leuchtet auf, sondern
+auch woher der Impuls kam (welche Automation sie gesteuert hat) und wohin er
+weiterfließt (welche Automation sie selbst auslöst, inklusive der davon
+gesteuerten Ziel-Entitäten).
 
 Für Kiosk/Screensaver lässt sich das konfigurierte Design per URL zusätzlich
 überschreiben: `&design=kaskade` (oder `radial`, `puls-kaskade`, `sonar-halo`,
@@ -36,9 +45,9 @@ Für Kiosk/Screensaver lässt sich das konfigurierte Design per URL zusätzlich
 
 ## Screensaver-/Kiosk-Modus
 
-Hänge `?kiosk` (oder `?screensaver`) an die URL an — dann verschwinden Filter, Legende
-und Status, und nur der rotierende, glühende Graph bleibt. Ideal für Wand-Tablets oder als
-ambienter Screensaver auf einem Dashboard.
+Hänge `?kiosk` (oder `?screensaver`) an die URL an — dann verschwinden Filter, Legende,
+Status und Action-Log, und nur der rotierende, glühende Graph bleibt. Ideal für
+Wand-Tablets oder als ambienter Screensaver auf einem Dashboard.
 
 Im Kiosk-Modus verwendet die Kamera einen festen Abstand (Default 2200), statt sich nach
 der Kräfte-Simulation automatisch einzupassen — auf schwächerer Hardware (Tablets) kann
