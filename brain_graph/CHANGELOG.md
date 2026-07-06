@@ -1,3 +1,21 @@
+## 1.6.0
+
+- Auswählbares Layout-Design über die Add-on-Konfiguration (Tab „Konfiguration"):
+  Frei (bisheriges Kräfte-Layout), Ebenen-Kaskade, Radial-Halo, Puls-Kaskade,
+  Sonar-Halo — jeweils ein DAG-Layout, das die Hierarchie (HA-Core → Etage →
+  Bereich → Gerät → Entität) lesbar hält, statt frei im Raum zu schweben
+- Etagen und Bereiche sind in allen Designs jetzt direkt im Graph beschriftet
+- Puls-Kaskade/Sonar-Halo zeigen keinen dauerhaften Hintergrund-Partikelstrom
+  mehr — nur echte Live-Aktivierungen sind sichtbar
+- Neu: wenn eine Entität aktiv wird, fließt der Datenstrom sichtbar Hop für Hop
+  durch die echten Hierarchie-Kanten nach oben bis zum HA-Core (nicht mehr nur
+  ein aufleuchtender Einzelknoten) — funktioniert in allen Designs
+- Radial-Halo/Sonar-Halo: Kräfte-Tuning für Ringe angepasst, damit Knoten
+  innerhalb ihres vorgesehenen Radius bleiben statt weit nach außen zu driften
+- Für Kiosk/Screensaver zusätzlich per `&design=<kaskade|radial|puls-kaskade|sonar-halo|free>`
+  in der URL überschreibbar
+- Hintergrund bleibt weiterhin tief schwarz (`#000000`)
+
 ## 1.5.0
 
 - Kiosk-Modus (`?kiosk`/`?screensaver`) verwendet jetzt einen festen Kamera-Abstand

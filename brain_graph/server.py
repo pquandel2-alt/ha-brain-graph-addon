@@ -19,6 +19,25 @@ CORE_WS = "ws://supervisor/core/websocket"
 CORE_API = "http://supervisor/core/api"
 PORT = 8099
 
+VALID_DESIGNS = {"free", "kaskade", "radial", "puls-kaskade", "sonar-halo"}
+
+
+def _load_design_option():
+    """Liest die vom Nutzer in der Add-on-Konfiguration gewählte Design-Option
+    aus /data/options.json (Supervisor-Konvention). Fällt auf "free" zurück,
+    falls die Datei fehlt (z. B. lokaler Testlauf ohne Supervisor)."""
+    try:
+        with open("/data/options.json", encoding="utf-8") as f:
+            options = json.load(f)
+        design = options.get("design", "free")
+        return design if design in VALID_DESIGNS else "free"
+    except (FileNotFoundError, json.JSONDecodeError, OSError) as exc:
+        _LOG.warning("Could not read /data/options.json (%s) — using default design", exc)
+        return "free"
+
+
+DESIGN = _load_design_option()
+
 ACTIVE_STATES = {"on", "playing", "running", "active", "home", "open"}
 
 NODE_COLORS = {
@@ -271,6 +290,7 @@ async def handle_graph(request):
     client: HAClient = request.app["ha"]
     try:
         graph = await build_graph(client)
+        graph["design"] = DESIGN
         return web.json_response(graph)
     except Exception as exc:  # noqa: BLE001
         _LOG.error("build_graph failed: %s", exc)

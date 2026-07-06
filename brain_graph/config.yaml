@@ -1,5 +1,5 @@
 name: Brain Graph
-version: "1.5.0"
+version: "1.6.0"
 slug: brain_graph
 description: Live 3D graph of all Home Assistant entities, devices, automations and their data flows
 url: https://github.com/pquandel2-alt/ha-brain-graph-addon
@@ -23,5 +23,7 @@ panel_title: Brain Graph
 panel_admin: false
 homeassistant_api: true
 hassio_api: true
-options: {}
-schema: false
+options:
+  design: free
+schema:
+  design: "list(free|kaskade|radial|puls-kaskade|sonar-halo)"

@@ -8,6 +8,31 @@ Nach dem Start öffnet sich „Brain Graph" in der Sidebar. Der 3D-Graph lädt a
 - **Scrollen**: Zoomen
 - **Klick auf Knoten**: Details anzeigen, Kamera fokussiert
 - **Filter-Chips oben links**: Nach Domain filtern
+- **Layout-Design**: wird über die Add-on-Konfiguration eingestellt (siehe unten)
+
+## Layout-Designs
+
+Das Layout wird nicht im Graph selbst, sondern über die Add-on-Konfiguration
+gewählt: Home Assistant → Einstellungen → Add-ons → Brain Graph → Tab
+„Konfiguration" → Option `design`. Nach dem Speichern das Add-on neu starten,
+damit die Änderung greift.
+
+Verfügbare Werte:
+
+- **free** (Frei) — das ursprüngliche freie Kräfte-Layout
+- **kaskade** (Ebenen-Kaskade) — Hierarchie als Wasserfall von oben (HA-Core)
+  nach unten (Etage → Bereich → Gerät → Entität), Etagen/Bereiche beschriftet
+- **radial** (Radial-Halo) — dieselbe Hierarchie als konzentrische Ringe um den HA-Core
+- **puls-kaskade** / **sonar-halo** — wie oben, aber ohne dauerhaften
+  Hintergrund-Partikelstrom: nur echte Live-Aktivierungen sind sichtbar
+
+In allen Designs gilt: aktiviert sich eine Entität, fließt der Datenstrom sichtbar
+Hop für Hop über die echten Verbindungen nach oben bis zum HA-Core — nicht nur der
+einzelne Knoten leuchtet auf.
+
+Für Kiosk/Screensaver lässt sich das konfigurierte Design per URL zusätzlich
+überschreiben: `&design=kaskade` (oder `radial`, `puls-kaskade`, `sonar-halo`,
+`free`), z. B. `?kiosk&design=sonar-halo`.
 
 ## Screensaver-/Kiosk-Modus
 
