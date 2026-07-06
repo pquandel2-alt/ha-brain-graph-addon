@@ -1,3 +1,9 @@
+## 1.3.0
+
+- Fester LAN-Port 8099 (zusätzlich zu Ingress): stabile iframe-Einbindung ohne
+  rotierenden Token — ideal als Screensaver auf dem Wandtablet unter
+  http://<HA-IP>:8099/?kiosk
+
 ## 1.2.0
 
 - Hintergrund wieder tiefschwarz — Bloom-Schwelle erhöht (0.35), Radius verkleinert (0.35):
