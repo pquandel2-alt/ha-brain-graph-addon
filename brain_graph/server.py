@@ -48,9 +48,16 @@ def _load_visible_domains(options):
     return {d.strip() for d in raw.split(",") if d.strip()}
 
 
+def _load_require_area(options):
+    """Liest die Option, ob Geräte/Entitäten ohne Bereichszuordnung ausgeblendet
+    werden sollen (Default: aus, bisheriges Verhalten)."""
+    return bool(options.get("require_area", False))
+
+
 _OPTIONS = _load_options()
 DESIGN = _load_design_option(_OPTIONS)
 VISIBLE_DOMAINS = _load_visible_domains(_OPTIONS)
+REQUIRE_AREA = _load_require_area(_OPTIONS)
 
 ACTIVE_STATES = {"on", "playing", "running", "active", "home", "open"}
 
@@ -195,7 +202,10 @@ async def build_graph(client: HAClient) -> dict:
         links.append({"source": "ha-core", "target": aid, "rel_type": "contains"})
 
     # Layer 3: Devices
+    device_area_map = {d["id"]: d.get("area_id") for d in devices}
     for device in devices:
+        if REQUIRE_AREA and not device.get("area_id"):
+            continue  # kein Bereich zugeordnet — auf Wunsch ausgeblendet
         did = f"device-{device['id']}"
         label = device.get("name_by_user") or device.get("name") or did
         add_node({"id": did, "label": label, "type": "device", "val": 3})
@@ -212,6 +222,10 @@ async def build_graph(client: HAClient) -> dict:
         reg = entity_reg_map.get(entity_id, {})
         if reg.get("disabled_by"):
             continue
+        if REQUIRE_AREA:
+            resolved_area = reg.get("area_id") or device_area_map.get(reg.get("device_id"))
+            if not resolved_area:
+                continue  # weder Entität noch Gerät hat einen Bereich — ausgeblendet
         attrs = state.get("attributes", {})
 
         add_node({
@@ -222,7 +236,7 @@ async def build_graph(client: HAClient) -> dict:
             "val": 1.5,
         })
 
-        if reg.get("device_id"):
+        if reg.get("device_id") and f"device-{reg['device_id']}" in node_ids:
             links.append({"source": f"device-{reg['device_id']}", "target": entity_id, "rel_type": "contains"})
         elif reg.get("area_id"):
             links.append({"source": f"area-{reg['area_id']}", "target": entity_id, "rel_type": "contains"})

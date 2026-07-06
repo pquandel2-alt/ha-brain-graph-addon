@@ -1,3 +1,12 @@
+## 1.10.0
+
+- Neue Add-on-Konfigurationsoption `require_area` (Default `false`): wenn
+  aktiviert, werden Geräte und Entitäten ohne Bereichszuordnung komplett
+  ausgeblendet (nicht mehr an HA-Core gehängt) — inklusive Automationen und
+  Skripten ohne Bereich. Eine Entität zählt als bereichs-zugeordnet, wenn sie
+  selbst oder ihr Gerät einen Bereich hat. Bereiche/HA-Core bleiben immer
+  sichtbar
+
 ## 1.9.1
 
 - Deaktivierte Entitäten (in der Entity-Registry per `disabled_by` markiert)

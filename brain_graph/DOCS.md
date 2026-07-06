@@ -66,6 +66,16 @@ Hinweis: Eine Live-Suche oder anklickbare „Alle hinzufügen"-Buttons sind auf
 der Add-on-Konfigurationsseite von Home Assistant technisch nicht möglich —
 sie unterstützt nur einfache Formularfelder, kein dynamisches UI.
 
+## Nur Entitäten mit Bereich anzeigen
+
+Über die Add-on-Konfiguration → Option `require_area` (Standard `aus`) lässt
+sich der Graph auf Geräte und Entitäten beschränken, die einem Bereich
+zugeordnet sind. Aktiviert man diese Option, werden Geräte und Entitäten ohne
+Bereichszuordnung komplett ausgeblendet — das gilt auch für Automationen und
+Skripte, die in Home Assistant üblicherweise keinen Bereich haben und dann
+ebenfalls verschwinden. Bereiche und der HA-Core-Knoten bleiben immer
+sichtbar. Nach dem Ändern das Add-on neu starten.
+
 ## Screensaver-/Kiosk-Modus
 
 Hänge `?kiosk` (oder `?screensaver`) an die URL an — dann verschwinden Filter, Legende
