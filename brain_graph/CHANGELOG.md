@@ -1,3 +1,12 @@
+## 1.13.3
+
+- Fix für Regression aus 1.13.2: die Rotation/Zoom-Sperre pro Frame machte
+  die Drehung ruckelig statt flüssig, weil sie bei jeder kleinen/langsamen
+  Handbewegung komplett aussetzte. Rotation reagiert jetzt wieder auf jeden
+  Frame; der Zoom-Jitter wird stattdessen über eine Glättung (EMA) plus
+  größere Totzone auf dem Pinch-Abstand unterdrückt, ohne die Rotation zu
+  blockieren.
+
 ## 1.13.2
 
 - Zoom "atmet" nicht mehr während einer reinen Drehbewegung: Pinch-Zoom und
