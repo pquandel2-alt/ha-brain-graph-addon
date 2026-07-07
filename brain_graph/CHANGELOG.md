@@ -1,3 +1,10 @@
+## 1.13.2
+
+- Zoom "atmet" nicht mehr während einer reinen Drehbewegung: Pinch-Zoom und
+  Rotation schließen sich pro Frame gegenseitig aus (Zoom greift nur, wenn
+  die Hand gerade stillsteht), zusätzlich eine Totzone gegen kleines
+  Bild-Rauschen im Pinch-Abstand.
+
 ## 1.13.1
 
 - Gestensteuerung reagiert nicht mehr auf vorbeigehende Personen: höhere
