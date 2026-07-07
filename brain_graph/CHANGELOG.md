@@ -1,3 +1,10 @@
+## 1.13.1
+
+- Gestensteuerung reagiert nicht mehr auf vorbeigehende Personen: höhere
+  Erkennungs-Konfidenz für MediaPipe HandLandmarker, eine Mindestgröße der
+  erkannten Hand im Kamerabild (muss nah genug am Tablet sein) und mehrere
+  stabile Frames in Folge, bevor die Steuerung überhaupt greift.
+
 ## 1.13.0
 
 - Gestensteuerung für den Screensaver: bei aktivem `&gestures=1` erkennt
