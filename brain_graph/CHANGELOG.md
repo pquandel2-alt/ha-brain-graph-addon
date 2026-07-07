@@ -1,3 +1,12 @@
+## 1.13.0
+
+- Gestensteuerung für den Screensaver: bei aktivem `&gestures=1` erkennt
+  MediaPipe HandLandmarker (clientseitig, WASM, keine Cloud) über die
+  Frontkamera Handbewegungen und dreht/zoomt den Graphen — Handbewegung
+  rotiert die Kamera, Pinch (Daumen/Zeigefinger) zoomt. Auto-Rotation pausiert
+  während einer erkannten Hand und setzt nach 4s Inaktivität wieder ein.
+  Verlangt eine WebView mit gewährter Kamera-Permission.
+
 ## 1.12.0
 
 - Der Datenfluss-Strahl (inkl. Ausblenden unbeteiligter Knoten) erscheint
